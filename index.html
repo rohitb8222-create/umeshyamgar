@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>कल्याण डोंबिवली महानगरपालिका - "ड" प्रभागक्षेत्र कार्यालय</title>
 
-  <!-- High-Resolution PDF Engines -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- High-Res PDF Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root {
       --primary: #0d47a1;
       --secondary: #1b5e20;
-      --border: #222;
       --bg-gray: #f0f2f5;
       --danger: #d32f2f;
       --warning: #f57c00;
@@ -116,7 +114,6 @@
     .btn-camera { background: var(--secondary); }
     .btn-gallery { background: var(--info); }
 
-    /* High Precision Live GPS Card */
     .gps-status-card {
       background: #e8f5e9;
       border: 1px solid #a5d6a7;
@@ -133,7 +130,6 @@
       color: #e65100;
     }
 
-    /* Live Preview Section */
     .preview-card-list {
       display: flex;
       flex-direction: column;
@@ -153,7 +149,7 @@
 
     .preview-img-wrap {
       width: 100%;
-      height: 220px;
+      height: 240px;
       overflow: hidden;
       border-radius: 4px;
       background: #000;
@@ -198,106 +194,11 @@
       margin-top: 16px;
     }
 
-    /* Print / PDF Elements */
-    .pdf-render-area {
-      position: absolute;
-      left: -9999px;
-      top: 0;
-      width: 794px;
-      background: #fff;
-    }
-
-    .pdf-page {
-      width: 794px;
-      height: 1120px;
-      padding: 25px 35px;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .pdf-header {
-      text-align: center;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 5px;
-      margin-bottom: 10px;
-    }
-
-    .pdf-header h1 {
-      font-size: 20px;
-      font-weight: 800;
-      color: #000;
-    }
-
-    .pdf-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #222;
-      margin-top: 2px;
-    }
-
-    .details-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 10px;
-    }
-
-    .details-table th, 
-    .details-table td {
-      border: 1.5px solid #333;
-      padding: 5px 8px;
-      font-size: 12.5px;
-      line-height: 1.3;
-    }
-
-    .details-table th {
-      width: 25%;
-      background-color: #f2f2f2;
-      text-align: left;
-      font-weight: bold;
-    }
-
-    .photo-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-grow: 1;
-      justify-content: space-between;
-    }
-
-    .photo-card {
-      border: 1.5px solid #333;
-      border-radius: 4px;
-      background: #000;
-      overflow: hidden;
-      display: flex;
-    }
-
-    .page-first .photo-card {
-      height: 350px;
-    }
-
-    .page-next .photo-card {
-      height: 480px;
-    }
-
-    .photo-card.single {
-      height: 740px !important;
-    }
-
-    .photo-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      display: block;
-    }
-
     #loadingOverlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.8);
       color: #fff;
       z-index: 99999;
       justify-content: center;
@@ -310,7 +211,7 @@
 <body>
 
   <div id="loadingOverlay">
-    <div style="font-size: 18px; font-weight: bold;">PDF तयार होत आहे...</div>
+    <div style="font-size: 18px; font-weight: bold;">HD PDF तयार होत आहे...</div>
     <div style="font-size: 13px;">कृपया प्रतीक्षा करा</div>
   </div>
 
@@ -341,7 +242,7 @@
 
     <div class="form-group">
       <label>रस्त्याचे नाव:</label>
-      <input type="text" id="inRoadName" placeholder="रस्त्याचे नाव टाका (उदा. टिळक रोड, कल्याण / डोंबिवली)" oninput="updateGpsAddressManual()">
+      <input type="text" id="inRoadName" placeholder="रस्त्याचे नाव टाका (उदा. टिळक रोड, डोंबिवली पूर्व)">
     </div>
 
     <div class="form-group">
@@ -363,7 +264,7 @@
     </div>
 
     <div class="form-group">
-      <label>📸 फोटो निवडा (Live Camera / Gallery):</label>
+      <label>📸 फोटो निवडा (GPS Map Camera Geo-Tag):</label>
       
       <div class="photo-btn-grid">
         <button type="button" class="custom-btn btn-camera" onclick="openCamera()">📷 Live Camera</button>
@@ -375,7 +276,7 @@
       <input type="file" id="replaceInput" accept="image/*" style="display:none;" onchange="executeReplace(event)">
 
       <div id="gpsStatusCard" class="gps-status-card searching">
-        📡 Live GPS शोधत आहे... कृपया Location Permission Allow करा.
+        📡 Live GPS शोधत आहे... कृपया लोकेशन चालू करा.
       </div>
       
       <div id="photoStatus" style="color: #0d47a1; font-weight: bold; margin-top: 8px; font-size: 13px;">कोणताही फोटो निवडलेला नाही</div>
@@ -383,10 +284,8 @@
       <div class="preview-card-list" id="previewList"></div>
     </div>
 
-    <button class="btn-submit" onclick="generateAccuratePdf()">📄 PDF डाऊनलोड करा (Download PDF)</button>
+    <button class="btn-submit" onclick="downloadCrystalClearPdf()">📄 HD PDF डाऊनलोड करा (Download PDF)</button>
   </div>
-
-  <div class="pdf-render-area" id="renderArea"></div>
 
   <script>
     const issueData = {
@@ -502,8 +401,9 @@
     let currentGeo = { 
       lat: "19.218330", 
       lon: "73.086720", 
-      locName: '"ड" प्रभाग क्षेत्र, KDMC',
-      fullAddress: 'कल्याण - डोंबिवली, ठाणे जिल्हा, महाराष्ट्र'
+      cityLine: "KDMC 'D' Ward, Dombivli, Maharashtra, India",
+      areaLine: "KDMC 'D' Ward Jurisdiction",
+      fullAddress: "Dombivli East, Thane, Maharashtra 421201, India"
     };
     let replacingIndex = -1;
 
@@ -535,13 +435,6 @@
       }
     }
 
-    function updateGpsAddressManual() {
-      const road = document.getElementById('inRoadName').value.trim();
-      if (road) {
-        currentGeo.locName = road;
-      }
-    }
-
     function fetchHighPrecisionGPS() {
       const card = document.getElementById('gpsStatusCard');
       if ("geolocation" in navigator) {
@@ -550,29 +443,29 @@
           currentGeo.lon = pos.coords.longitude.toFixed(6);
           
           try {
-            // Dual Reverse Geocoding with Fallback for 100% Accuracy
-            const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${currentGeo.lat}&longitude=${currentGeo.lon}&localityLanguage=mr`);
+            const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${currentGeo.lat}&longitude=${currentGeo.lon}&localityLanguage=en`);
             const data = await res.json();
             
-            let locality = data.locality || data.city || "कल्याण-डोंबिवली";
-            let street = data.street || data.principalSubdivisionSection || "";
-            let district = data.principalSubdivision || "महाराष्ट्र";
-            let pin = data.postcode || "";
+            const city = data.city || data.locality || "Dombivli";
+            const state = data.principalSubdivision || "Maharashtra";
+            const country = data.countryName || "India";
+            const pin = data.postcode || "421201";
+            const suburb = data.locality || "KDMC D-Ward";
 
-            const roadInput = document.getElementById('inRoadName').value.trim();
-            currentGeo.locName = roadInput || (street ? `${street}, ${locality}` : locality);
-            currentGeo.fullAddress = `${locality}, ${district} ${pin ? '- ' + pin : ''}`;
-
+            currentGeo.cityLine = `${city}, ${state}, ${country}`;
+            currentGeo.areaLine = `${suburb}, KDMC D-Ward Jurisdiction`;
+            currentGeo.fullAddress = `${suburb}, ${city}, ${state} ${pin}, ${country}`;
           } catch (e) {
-            currentGeo.locName = document.getElementById('inRoadName').value.trim() || '"ड" प्रभाग क्षेत्र, कल्याण-डोंबिवली';
-            currentGeo.fullAddress = "कल्याण-डोंबिवली, ठाणे जिल्हा, महाराष्ट्र";
+            currentGeo.cityLine = "Dombivli, Maharashtra, India";
+            currentGeo.areaLine = "KDMC 'D' Prabhag Kshetra";
+            currentGeo.fullAddress = "Dombivli, Thane, Maharashtra 421201, India";
           }
           
           card.className = "gps-status-card";
-          card.innerHTML = `📍 <b>अचूक GPS:</b> ${currentGeo.lat}, ${currentGeo.lon}<br>📌 <b>पत्ता:</b> ${currentGeo.locName}, ${currentGeo.fullAddress}`;
+          card.innerHTML = `📍 <b>GPS:</b> Lat ${currentGeo.lat}°, Long ${currentGeo.lon}°<br>📌 <b>पत्ता:</b> ${currentGeo.cityLine} | ${currentGeo.fullAddress}`;
         }, (err) => {
           card.className = "gps-status-card searching";
-          card.innerHTML = `⚠️ GPS सिग्नल मिळाला नाही (डिफॉल्ट KDMC प्रभाग वापरला जात आहे). रस्त्याचे नाव अचूक टाका.`;
+          card.innerHTML = `⚠️ GPS सिग्नल शोधत आहे... (डिफॉल्ट कल्याण-डोंबिवली लोकेशन सेट केले आहे)`;
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
       }
     }
@@ -593,7 +486,7 @@
 
       for (const file of files) {
         const base64 = await readFileAsBase64(file);
-        const stampedBase64 = await applyOfficialGeoTagStamp(base64);
+        const stampedBase64 = await applyExactGeoTagStamp(base64);
         uploadedImages.push(stampedBase64);
       }
 
@@ -609,57 +502,120 @@
       });
     }
 
-    // Professional Government Grade Geo-Tag Canvas Stamping Engine
-    function applyOfficialGeoTagStamp(imgSrc) {
+    // Large-Text High-Visibility Geo-Tag Canvas Engine
+    function applyExactGeoTagStamp(imgSrc) {
       return new Promise((resolve) => {
         const img = new Image();
         img.src = imgSrc;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const width = img.naturalWidth || 1280;
-          const height = img.naturalHeight || 960;
+          const width = 1280;
+          const height = Math.round((img.naturalHeight / img.naturalWidth) * 1280) || 960;
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
 
-          // 1. Draw base photo
+          // Draw main captured image
           ctx.drawImage(img, 0, 0, width, height);
 
-          // 2. Responsive dimensions
-          const barHeight = Math.max(90, Math.round(height * 0.16));
+          // Increased Bar Height for Big Fonts
+          const barHeight = Math.max(220, Math.round(height * 0.28));
+          const mapWidth = Math.round(barHeight * 0.88);
           const baseY = height - barHeight;
 
-          // 3. Dark gradient backdrop for high contrast
-          ctx.fillStyle = "rgba(10, 15, 30, 0.82)";
+          // 1. Solid Dark Gradient Overlay
+          const grad = ctx.createLinearGradient(0, baseY, width, baseY);
+          grad.addColorStop(0, "rgba(235, 140, 0, 0.95)");
+          grad.addColorStop(0.18, "rgba(15, 10, 8, 0.92)");
+          grad.addColorStop(1, "rgba(5, 5, 5, 0.92)");
+          ctx.fillStyle = grad;
           ctx.fillRect(0, baseY, width, barHeight);
 
-          // 4. Left Blue Brand Stripe
-          ctx.fillStyle = "#0d47a1";
-          ctx.fillRect(0, baseY, Math.round(width * 0.015), barHeight);
+          // 2. Left Satellite Map Box
+          const mapX = 14;
+          const mapY = baseY + 12;
+          const mapH = barHeight - 24;
 
-          const leftPadding = Math.round(width * 0.035);
-          const now = new Date();
-          const dateStr = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+          ctx.fillStyle = "#2d3748";
+          ctx.fillRect(mapX, mapY, mapWidth, mapH);
+          
+          ctx.strokeStyle = "#4a5568";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(mapX, mapY + mapH * 0.4);
+          ctx.lineTo(mapX + mapWidth, mapY + mapH * 0.7);
+          ctx.stroke();
 
-          // Header Text
-          const mainTitle = `कल्याण डोंबिवली महानगरपालिका | "ड" प्रभागक्षेत्र कार्यालय`;
-          ctx.fillStyle = "#ffeb3b";
-          ctx.font = `bold ${Math.round(barHeight * 0.22)}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
-          ctx.fillText(mainTitle, leftPadding, baseY + Math.round(barHeight * 0.28));
+          ctx.beginPath();
+          ctx.moveTo(mapX + mapWidth * 0.5, mapY);
+          ctx.lineTo(mapX + mapWidth * 0.3, mapY + mapH);
+          ctx.stroke();
 
-          // Road & Location Text
+          // Red Map Pin
+          const pinX = mapX + (mapWidth / 2);
+          const pinY = mapY + (mapH / 2) - 10;
+          
+          ctx.fillStyle = "#e53935";
+          ctx.beginPath();
+          ctx.arc(pinX, pinY, 16, Math.PI, 0, false);
+          ctx.lineTo(pinX, pinY + 26);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.fillStyle = "#8e0000";
+          ctx.beginPath();
+          ctx.arc(pinX, pinY, 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.font = "bold 13px sans-serif";
+          ctx.fillText("Google", mapX + 10, mapY + mapH - 8);
+
+          // 3. Address & Details Text on Right Side (Larger Font Sizes)
+          const textX = mapX + mapWidth + 22;
+          const textMaxW = width - textX - 25;
+
           const roadInput = document.getElementById('inRoadName').value.trim();
-          const displayRoad = roadInput || currentGeo.locName;
+          const cityLine = roadInput ? `${roadInput}, ${currentGeo.cityLine}` : currentGeo.cityLine;
+          const areaLine = currentGeo.areaLine;
+          const fullAddr = currentGeo.fullAddress;
+
+          const now = new Date();
+          const day = String(now.getDate()).padStart(2, '0');
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const year = String(now.getFullYear()).slice(-2);
+          const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+          const formattedDate = `${day}/${month}/${year} ${timeStr} GMT+05:30`;
+
+          // Line 1: City & State (Bold White - Large)
           ctx.fillStyle = "#ffffff";
-          ctx.font = `bold ${Math.round(barHeight * 0.20)}px sans-serif`;
-          ctx.fillText(`📍 ${displayRoad}, ${currentGeo.fullAddress}`, leftPadding, baseY + Math.round(barHeight * 0.58));
+          ctx.font = "bold 26px sans-serif";
+          ctx.fillText(cityLine, textX, baseY + 38, textMaxW);
 
-          // Lat/Long, Accuracy & Timestamp Text
-          ctx.fillStyle = "#00e676";
-          ctx.font = `600 ${Math.round(barHeight * 0.18)}px monospace`;
-          ctx.fillText(`🌐 Lat: ${currentGeo.lat}° N, Long: ${currentGeo.lon}° E | 🕒 ${dateStr}`, leftPadding, baseY + Math.round(barHeight * 0.86));
+          // Line 2: Area / Road Stretch
+          ctx.fillStyle = "#f5f5f5";
+          ctx.font = "600 20px sans-serif";
+          ctx.fillText(areaLine, textX, baseY + 72, textMaxW);
 
-          resolve(canvas.toDataURL('image/jpeg', 0.95));
+          // Line 3: Full Address
+          ctx.fillStyle = "#eeeeee";
+          ctx.font = "500 19px sans-serif";
+          ctx.fillText(fullAddr, textX, baseY + 104, textMaxW);
+
+          // Line 4: Latitude
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 21px sans-serif";
+          ctx.fillText(`Lat ${currentGeo.lat}°`, textX, baseY + 140);
+
+          // Line 5: Longitude
+          ctx.fillText(`Long ${currentGeo.lon}°`, textX, baseY + 172);
+
+          // Line 6: Date & Time GMT (Bottom text)
+          ctx.fillStyle = "#ffeb3b";
+          ctx.font = "bold 18px sans-serif";
+          ctx.fillText(formattedDate, textX, baseY + 202);
+
+          resolve(canvas.toDataURL('image/jpeg', 0.98));
         };
       });
     }
@@ -684,9 +640,9 @@
             <img src="${imgSrc}" alt="Geo-Tagged Preview">
           </div>
           <div class="preview-actions">
-            <button type="button" class="act-btn btn-rotate" onclick="rotateImage(${index})">🔄 फिरवा (Rotate)</button>
-            <button type="button" class="act-btn btn-replace" onclick="triggerReplace(${index})">✏️ बदला (Change)</button>
-            <button type="button" class="act-btn btn-delete" onclick="deleteImage(${index})">🗑️ हटवा (Delete)</button>
+            <button type="button" class="act-btn btn-rotate" onclick="rotateImage(${index})">🔄 फिरवा</button>
+            <button type="button" class="act-btn btn-replace" onclick="triggerReplace(${index})">✏️ बदला</button>
+            <button type="button" class="act-btn btn-delete" onclick="deleteImage(${index})">🗑️ हटवा</button>
           </div>
         `;
         container.appendChild(item);
@@ -707,7 +663,7 @@
       const file = event.target.files[0];
       if (file && replacingIndex > -1) {
         const base64 = await readFileAsBase64(file);
-        const stamped = await applyOfficialGeoTagStamp(base64);
+        const stamped = await applyExactGeoTagStamp(base64);
         uploadedImages[replacingIndex] = stamped;
         renderPreviewList();
         replacingIndex = -1;
@@ -727,12 +683,17 @@
         ctx.rotate(90 * Math.PI / 180);
         ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
         
-        uploadedImages[index] = canvas.toDataURL('image/jpeg', 0.95);
+        uploadedImages[index] = canvas.toDataURL('image/jpeg', 0.98);
         renderPreviewList();
       };
     }
 
-    async function generateAccuratePdf() {
+    async function downloadCrystalClearPdf() {
+      if (uploadedImages.length === 0) {
+        alert("कृपया अहवालासाठी किमान १ फोटो अपलोड करा.");
+        return;
+      }
+
       const overlay = document.getElementById('loadingOverlay');
       overlay.style.display = 'flex';
 
@@ -744,76 +705,112 @@
       const toLoc = document.getElementById('inTo').value || '-';
       const remark = document.getElementById('inRemark').value || '-';
 
-      const renderArea = document.getElementById('renderArea');
-      renderArea.innerHTML = '';
-
-      const chunks = [];
-      if (uploadedImages.length === 0) {
-        chunks.push([]);
-      } else {
-        for (let i = 0; i < uploadedImages.length; i += 2) {
-          chunks.push(uploadedImages.slice(i, i + 2));
-        }
-      }
-
-      chunks.forEach((chunk, pageIndex) => {
-        const pageDiv = document.createElement('div');
-        pageDiv.className = `pdf-page ${pageIndex === 0 ? 'page-first' : 'page-next'}`;
-
-        let headerHTML = `
-          <div class="pdf-header">
-            <h1>कल्याण डोंबिवली महानगरपालिका</h1>
-            <h2>"ड" प्रभागक्षेत्र कार्यालय</h2>
-          </div>
-        `;
-
-        let detailsHTML = '';
-        if (pageIndex === 0) {
-          detailsHTML = `
-            <table class="details-table">
-              <tr><th>दिनांक</th><td>${date}</td></tr>
-              <tr><th>मुख्य प्रकार</th><td>${mainCat}</td></tr>
-              <tr><th>तपशील</th><td>${subCat}</td></tr>
-              <tr><th>रस्त्याचे नाव</th><td>${roadName}</td></tr>
-              <tr><th>व्याप्ती</th><td><b>पासून:</b> ${fromLoc} &nbsp;&nbsp;|&nbsp;&nbsp; <b>पर्यंत:</b> ${toLoc}</td></tr>
-              <tr><th>शेरा (Remark)</th><td>${remark}</td></tr>
-            </table>
-          `;
-        }
-
-        let photosHTML = '<div class="photo-stack">';
-        chunk.forEach(imgSrc => {
-          const singleClass = chunk.length === 1 ? 'single' : '';
-          photosHTML += `
-            <div class="photo-card ${singleClass}">
-              <img src="${imgSrc}" alt="Geo-Tagged Photo">
-            </div>
-          `;
-        });
-        photosHTML += '</div>';
-
-        pageDiv.innerHTML = headerHTML + detailsHTML + photosHTML;
-        renderArea.appendChild(pageDiv);
-      });
-
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('p', 'mm', 'a4');
-      const pages = renderArea.querySelectorAll('.pdf-page');
 
-      for (let i = 0; i < pages.length; i++) {
-        const canvas = await html2canvas(pages[i], {
-          scale: 2,
-          useCORS: true,
-          logging: false
-        });
-        const imgData = canvas.toDataURL('image/jpeg', 0.98);
-
-        if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+      const chunks = [];
+      for (let i = 0; i < uploadedImages.length; i += 2) {
+        chunks.push(uploadedImages.slice(i, i + 2));
       }
 
-      pdf.save(`KDMC_D_Prabhag_Report_${Date.now()}.pdf`);
+      for (let p = 0; p < chunks.length; p++) {
+        if (p > 0) pdf.addPage();
+
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = 2480;
+        pageCanvas.height = 3508;
+        const pctx = pageCanvas.getContext('2d');
+
+        pctx.fillStyle = "#ffffff";
+        pctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+
+        // Header Section
+        pctx.fillStyle = "#000000";
+        pctx.font = "bold 58px sans-serif";
+        pctx.textAlign = "center";
+        pctx.fillText("कल्याण डोंबिवली महानगरपालिका", 1240, 140);
+
+        pctx.font = "bold 44px sans-serif";
+        pctx.fillStyle = "#222222";
+        pctx.fillText('"ड" प्रभागक्षेत्र कार्यालय', 1240, 210);
+
+        pctx.strokeStyle = "#000000";
+        pctx.lineWidth = 4;
+        pctx.beginPath();
+        pctx.moveTo(100, 245);
+        pctx.lineTo(2380, 245);
+        pctx.stroke();
+
+        let currentY = 270;
+
+        if (p === 0) {
+          const tableData = [
+            ["दिनांक", date],
+            ["मुख्य प्रकार", mainCat],
+            ["तपशील", subCat],
+            ["रस्त्याचे नाव", roadName],
+            ["व्याप्ती", `पासून: ${fromLoc}   |   पर्यंत: ${toLoc}`],
+            ["शेरा (Remark)", remark]
+          ];
+
+          const rowH = 72;
+          const tableW = 2280;
+          const startX = 100;
+
+          pctx.textAlign = "left";
+          tableData.forEach((row, idx) => {
+            const y = currentY + (idx * rowH);
+
+            pctx.fillStyle = "#f2f2f2";
+            pctx.fillRect(startX, y, 550, rowH);
+
+            pctx.strokeStyle = "#333333";
+            pctx.lineWidth = 3;
+            pctx.strokeRect(startX, y, 550, rowH);
+            pctx.strokeRect(startX + 550, y, tableW - 550, rowH);
+
+            pctx.fillStyle = "#000000";
+            pctx.font = "bold 34px sans-serif";
+            pctx.fillText(row[0], startX + 25, y + 48);
+
+            pctx.font = "500 32px sans-serif";
+            pctx.fillText(row[1], startX + 580, y + 48, tableW - 610);
+          });
+
+          currentY += (tableData.length * rowH) + 40;
+        } else {
+          currentY = 280;
+        }
+
+        const photoChunk = chunks[p];
+        const availableHeight = 3400 - currentY;
+        const photoHeight = photoChunk.length === 1 ? availableHeight - 30 : Math.round((availableHeight - 40) / 2);
+
+        for (let imgIdx = 0; imgIdx < photoChunk.length; imgIdx++) {
+          const imgY = currentY + (imgIdx * (photoHeight + 30));
+          const img = await loadImageElement(photoChunk[imgIdx]);
+
+          pctx.strokeStyle = "#111111";
+          pctx.lineWidth = 4;
+          pctx.strokeRect(100, imgY, 2280, photoHeight);
+
+          pctx.drawImage(img, 102, imgY + 2, 2276, photoHeight - 4);
+        }
+
+        const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.96);
+        pdf.addImage(pageImgData, 'JPEG', 0, 0, 210, 297);
+      }
+
+      pdf.save(`KDMC_Report_${Date.now()}.pdf`);
       overlay.style.display = 'none';
+    }
+
+    function loadImageElement(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+      });
     }
   </script>
 </body>
