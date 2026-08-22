@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KDMC ड प्रभाग क्षेत्र १४ - तक्रार अहवाल</title>
+  <title>कल्याण डोंबिवली महानगरपालिका - "ड" प्रभागक्षेत्र कार्यालय</title>
+
+  <!-- High-Resolution PDF Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     :root {
       --primary: #0d47a1;
+      --secondary: #1b5e20;
       --border: #222;
-      --bg-gray: #f4f6f9;
+      --bg-gray: #f0f2f5;
       --danger: #d32f2f;
       --warning: #f57c00;
       --info: #0288d1;
@@ -16,7 +22,7 @@
 
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -27,36 +33,42 @@
       color: #333;
     }
 
-    /* Mobile Entry Form UI */
     .form-container {
       max-width: 650px;
       margin: 0 auto 30px;
       background: #ffffff;
       padding: 16px;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .form-header {
       text-align: center;
       margin-bottom: 15px;
       border-bottom: 2px solid var(--primary);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
 
     .form-header h2 {
-      font-size: 18px;
+      font-size: 19px;
       color: var(--primary);
-      margin-bottom: 4px;
     }
 
     .form-header h3 {
       font-size: 15px;
-      color: #444;
+      color: #333;
+      margin-top: 4px;
+      font-weight: 600;
     }
 
     .form-group {
       margin-bottom: 12px;
+    }
+
+    .road-stretch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     label {
@@ -64,7 +76,6 @@
       font-size: 13px;
       font-weight: bold;
       margin-bottom: 5px;
-      color: #222;
     }
 
     input, select, textarea {
@@ -78,24 +89,46 @@
 
     textarea {
       resize: vertical;
-      min-height: 60px;
+      min-height: 55px;
     }
 
-    .file-input-box {
-      border: 2px dashed #90caf9;
-      background: #e3f2fd;
-      padding: 14px;
-      text-align: center;
+    .photo-btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .custom-btn {
+      padding: 12px;
+      border: none;
       border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #fff;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
-    .file-input-box input {
-      display: block;
-      margin-top: 6px;
+    .btn-camera { background: var(--secondary); }
+    .btn-gallery { background: var(--info); }
+
+    .location-badge {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+      line-height: 1.4;
     }
 
-    /* Interactive Preview Cards */
+    /* Live Preview Section */
     .preview-card-list {
       display: flex;
       flex-direction: column;
@@ -104,52 +137,43 @@
     }
 
     .preview-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #fff;
-      padding: 8px;
+      background: #fafafa;
+      padding: 10px;
       border-radius: 6px;
       border: 1px solid #ddd;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .preview-thumb-wrap {
-      width: 80px;
-      height: 80px;
-      flex-shrink: 0;
+    .preview-img-wrap {
+      width: 100%;
+      height: 220px;
       overflow: hidden;
       border-radius: 4px;
-      background: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #000;
     }
 
-    .preview-thumb-wrap img {
+    .preview-img-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .preview-actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      flex-grow: 1;
+      gap: 8px;
+      justify-content: flex-end;
     }
 
     .act-btn {
       border: none;
-      padding: 7px 10px;
+      padding: 7px 12px;
       font-size: 12px;
       font-weight: bold;
       border-radius: 4px;
       cursor: pointer;
       color: #fff;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .btn-rotate { background-color: var(--warning); }
@@ -169,131 +193,128 @@
       margin-top: 16px;
     }
 
-    /* Print & PDF Layout */
-    .print-wrapper {
-      display: none;
+    /* PDF Rendering Elements */
+    .pdf-render-area {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      width: 794px;
+      background: #fff;
     }
 
-    @media print {
-      body {
-        background: transparent !important;
-        padding: 0 !important;
-      }
+    .pdf-page {
+      width: 794px;
+      height: 1120px;
+      padding: 25px 35px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-      .form-container {
-        display: none !important;
-      }
+    .pdf-header {
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
 
-      .print-wrapper {
-        display: block !important;
-        width: 100%;
-      }
+    .pdf-header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #000;
+    }
 
-      @page {
-        size: A4 portrait;
-        margin: 8mm 10mm;
-      }
+    .pdf-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+      margin-top: 2px;
+    }
 
-      .pdf-page {
-        width: 100%;
-        height: 275mm;
-        page-break-after: always;
-        page-break-inside: avoid;
-        display: flex;
-        flex-direction: column;
-      }
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
 
-      .pdf-page:last-child {
-        page-break-after: avoid;
-      }
+    .details-table th, 
+    .details-table td {
+      border: 1.5px solid #333;
+      padding: 5px 8px;
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
 
-      .pdf-header {
-        text-align: center;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 4px;
-        margin-bottom: 8px;
-      }
+    .details-table th {
+      width: 25%;
+      background-color: #f2f2f2;
+      text-align: left;
+      font-weight: bold;
+    }
 
-      .pdf-header h1 {
-        font-size: 17px;
-        font-weight: 800;
-        margin: 0;
-      }
+    .photo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
 
-      .pdf-header h2 {
-        font-size: 14px;
-        font-weight: 700;
-        margin: 2px 0 0;
-      }
+    .photo-card {
+      border: 1.5px solid #333;
+      border-radius: 4px;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+    }
 
-      .details-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 8px;
-      }
+    .page-first .photo-card {
+      height: 350px;
+    }
 
-      .details-table th, 
-      .details-table td {
-        border: 1px solid var(--border);
-        padding: 4px 8px;
-        font-size: 12px;
-        line-height: 1.3;
-      }
+    .page-next .photo-card {
+      height: 480px;
+    }
 
-      .details-table th {
-        width: 25%;
-        background-color: #f0f0f0;
-        text-align: left;
-      }
+    .photo-card.single {
+      height: 740px !important;
+    }
 
-      .photo-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        flex-grow: 1;
-      }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+    }
 
-      .photo-card {
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        padding: 2px;
-        display: block;
-        background: #fff;
-        overflow: hidden;
-      }
-
-      .page-first .photo-card {
-        height: 98mm;
-      }
-
-      .page-next .photo-card {
-        height: 124mm;
-      }
-
-      .page-first .photo-card.single {
-        height: 205mm;
-      }
-
-      .page-next .photo-card.single {
-        height: 250mm;
-      }
-
-      .photo-card img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: fill !important;
-        display: block;
-      }
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 12px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Input Form -->
+  <!-- Loading Screen -->
+  <div id="loadingOverlay">
+    <div style="font-size: 18px; font-weight: bold;">PDF तयार होत आहे...</div>
+    <div style="font-size: 13px;">कृपया थांबा</div>
+  </div>
+
+  <!-- Entry Form -->
   <div class="form-container">
     <div class="form-header">
       <h2>कल्याण डोंबिवली महानगरपालिका</h2>
-      <h3>ड प्रभाग क्षेत्र १४ - तक्रार निवारण अहवाल</h3>
+      <h3>"ड" प्रभागक्षेत्र कार्यालय</h3>
     </div>
 
     <div class="form-group">
@@ -316,34 +337,52 @@
     </div>
 
     <div class="form-group">
-      <label>ठिकाण / रस्त्याचे नाव:</label>
-      <input type="text" id="inLocation" placeholder="रस्त्याचे नाव / लँडमार्क टाका">
+      <label>रस्त्याचे नाव:</label>
+      <input type="text" id="inRoadName" placeholder="रस्त्याचे नाव टाका">
+    </div>
+
+    <div class="form-group">
+      <div class="road-stretch-grid">
+        <div>
+          <label>पासून (From):</label>
+          <input type="text" id="inFrom" placeholder="सुरुवात ठिकाण">
+        </div>
+        <div>
+          <label>पर्यंत (To):</label>
+          <input type="text" id="inTo" placeholder="शेवट ठिकाण">
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <label>शेरा (Remark):</label>
-      <textarea id="inRemark" placeholder="तक्रारीबाबत शेरा किंवा अतिरिक्त माहिती..."></textarea>
+      <textarea id="inRemark" placeholder="तक्रारीबाबत शेरा किंवा अधिक माहिती..."></textarea>
     </div>
 
     <div class="form-group">
-      <div class="file-input-box">
-        <label>📸 फोटो निवडा (Multi-Select):</label>
-        <input type="file" id="multiPhotos" accept="image/*" multiple onchange="handlePhotos(event)">
-        <div id="photoStatus" style="color: #0d47a1; font-weight: bold; margin-top: 6px; font-size: 13px;">कोणताही फोटो निवडलेला नाही</div>
-      </div>
+      <label>📸 फोटो निवडा (Live Camera / Gallery):</label>
       
-      <!-- Interactive Preview List with Rotate / Change / Delete -->
+      <div class="photo-btn-grid">
+        <button type="button" class="custom-btn btn-camera" onclick="openCamera()">📷 Live Camera</button>
+        <button type="button" class="custom-btn btn-gallery" onclick="openGallery()">🖼️ Gallery (Multi)</button>
+      </div>
+
+      <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="handleIncomingFiles(event)">
+      <input type="file" id="galleryInput" accept="image/*" multiple style="display:none;" onchange="handleIncomingFiles(event)">
+      <input type="file" id="replaceInput" accept="image/*" style="display:none;" onchange="executeReplace(event)">
+
+      <div id="locationBadge" class="location-badge">📍 GPS शोधत आहे...</div>
+      <div id="photoStatus" style="color: #0d47a1; font-weight: bold; margin-top: 8px; font-size: 13px;">कोणताही फोटो निवडलेला नाही</div>
+
+      <!-- Live Geo-Tagged Preview List -->
       <div class="preview-card-list" id="previewList"></div>
     </div>
 
-    <!-- Hidden Input for Replacing Individual Photo -->
-    <input type="file" id="replaceInput" accept="image/*" style="display:none;" onchange="executeReplace(event)">
-
-    <button class="btn-submit" onclick="generateReport()">PDF तयार करा / प्रिंट करा</button>
+    <button class="btn-submit" onclick="generateAccuratePdf()">📄 PDF डाऊनलोड करा (Download PDF)</button>
   </div>
 
-  <!-- Dynamic Printable Area -->
-  <div class="print-wrapper" id="printContent"></div>
+  <!-- Offscreen Render Canvas -->
+  <div class="pdf-render-area" id="renderArea"></div>
 
   <script>
     const issueData = {
@@ -456,6 +495,7 @@
     };
 
     let uploadedImages = [];
+    let currentGeo = { lat: null, lon: null, address: "ड प्रभाग क्षेत्र, KDMC" };
     let replacingIndex = -1;
 
     window.onload = function() {
@@ -468,6 +508,7 @@
         opt.innerText = category;
         mainSelect.appendChild(opt);
       }
+      fetchLiveGPS();
     };
 
     function loadSubCategories() {
@@ -485,23 +526,99 @@
       }
     }
 
-    function handlePhotos(event) {
+    function openCamera() {
+      fetchLiveGPS();
+      document.getElementById('cameraInput').click();
+    }
+
+    function openGallery() {
+      fetchLiveGPS();
+      document.getElementById('galleryInput').click();
+    }
+
+    function fetchLiveGPS() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          currentGeo.lat = pos.coords.latitude.toFixed(6);
+          currentGeo.lon = pos.coords.longitude.toFixed(6);
+          
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${currentGeo.lat}&lon=${currentGeo.lon}&format=json`);
+            const data = await res.json();
+            if (data && data.display_name) {
+              const parts = data.display_name.split(',');
+              currentGeo.address = parts.slice(0, 4).join(', ');
+            }
+          } catch (e) {
+            currentGeo.address = "ड प्रभागक्षेत्र, कल्याण-डोंबिवली";
+          }
+          
+          const badge = document.getElementById('locationBadge');
+          badge.style.display = 'block';
+          badge.innerHTML = `📍 <b>GPS:</b> Lat: ${currentGeo.lat}, Lon: ${currentGeo.lon}<br>📍 <b>पत्ता:</b> ${currentGeo.address}`;
+        }, () => {
+          currentGeo.lat = "19.2183";
+          currentGeo.lon = "73.0867";
+        }, { enableHighAccuracy: true });
+      }
+    }
+
+    async function handleIncomingFiles(event) {
       const files = Array.from(event.target.files);
       if (files.length === 0) return;
 
-      let loadedCount = 0;
-      files.forEach(file => {
+      for (const file of files) {
+        const base64 = await readFileAsBase64(file);
+        const stampedBase64 = await applyGeoTagStamp(base64);
+        uploadedImages.push(stampedBase64);
+      }
+
+      renderPreviewList();
+      event.target.value = '';
+    }
+
+    function readFileAsBase64(file) {
+      return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          uploadedImages.push(e.target.result);
-          loadedCount++;
-          if (loadedCount === files.length) {
-            renderPreviewList();
-          }
-        };
+        reader.onload = (e) => resolve(e.target.result);
         reader.readAsDataURL(file);
       });
-      event.target.value = '';
+    }
+
+    function applyGeoTagStamp(imgSrc) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = imgSrc;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth || 1200;
+          canvas.height = img.naturalHeight || 900;
+          const ctx = canvas.getContext('2d');
+
+          // Draw Base Image
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Geo Tag Footer Bar
+          const overlayHeight = Math.max(75, canvas.height * 0.14);
+          ctx.fillStyle = "rgba(0, 0, 0, 0.70)";
+          ctx.fillRect(0, canvas.height - overlayHeight, canvas.width, overlayHeight);
+
+          const now = new Date();
+          const dateStr = now.toLocaleDateString('mr-IN') + ' ' + now.toLocaleTimeString('mr-IN');
+          const latText = `📍 Lat: ${currentGeo.lat || '19.21833'}, Lon: ${currentGeo.lon || '73.08672'}`;
+          const addrText = `KDMC "ड" प्रभाग | ${currentGeo.address}`;
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = `bold ${Math.round(overlayHeight * 0.23)}px sans-serif`;
+          ctx.fillText(addrText, 20, canvas.height - (overlayHeight * 0.62));
+          
+          ctx.fillStyle = "#ffeb3b";
+          ctx.font = `${Math.round(overlayHeight * 0.20)}px sans-serif`;
+          ctx.fillText(`${latText} | 🕒 ${dateStr}`, 20, canvas.height - (overlayHeight * 0.24));
+
+          resolve(canvas.toDataURL('image/jpeg', 0.92));
+        };
+      });
     }
 
     function renderPreviewList() {
@@ -520,8 +637,8 @@
         const item = document.createElement('div');
         item.className = 'preview-item';
         item.innerHTML = `
-          <div class="preview-thumb-wrap">
-            <img src="${imgSrc}" alt="Thumbnail">
+          <div class="preview-img-wrap">
+            <img src="${imgSrc}" alt="Geo-Tagged Preview">
           </div>
           <div class="preview-actions">
             <button type="button" class="act-btn btn-rotate" onclick="rotateImage(${index})">🔄 फिरवा (Rotate)</button>
@@ -543,16 +660,14 @@
       document.getElementById('replaceInput').click();
     }
 
-    function executeReplace(event) {
+    async function executeReplace(event) {
       const file = event.target.files[0];
       if (file && replacingIndex > -1) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          uploadedImages[replacingIndex] = e.target.result;
-          renderPreviewList();
-          replacingIndex = -1;
-        };
-        reader.readAsDataURL(file);
+        const base64 = await readFileAsBase64(file);
+        const stamped = await applyGeoTagStamp(base64);
+        uploadedImages[replacingIndex] = stamped;
+        renderPreviewList();
+        replacingIndex = -1;
       }
       event.target.value = '';
     }
@@ -574,15 +689,20 @@
       };
     }
 
-    function generateReport() {
+    async function generateAccuratePdf() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.style.display = 'flex';
+
       const date = document.getElementById('inDate').value || '-';
       const mainCat = document.getElementById('inMainCat').value || '-';
       const subCat = document.getElementById('inSubCat').value || '-';
-      const loc = document.getElementById('inLocation').value || '-';
+      const roadName = document.getElementById('inRoadName').value || '-';
+      const fromLoc = document.getElementById('inFrom').value || '-';
+      const toLoc = document.getElementById('inTo').value || '-';
       const remark = document.getElementById('inRemark').value || '-';
 
-      const printContent = document.getElementById('printContent');
-      printContent.innerHTML = '';
+      const renderArea = document.getElementById('renderArea');
+      renderArea.innerHTML = '';
 
       const chunks = [];
       if (uploadedImages.length === 0) {
@@ -600,7 +720,7 @@
         let headerHTML = `
           <div class="pdf-header">
             <h1>कल्याण डोंबिवली महानगरपालिका</h1>
-            <h2>ड प्रभाग क्षेत्र कार्यालय क्र. १४</h2>
+            <h2>"ड" प्रभागक्षेत्र कार्यालय</h2>
           </div>
         `;
 
@@ -611,7 +731,8 @@
               <tr><th>दिनांक</th><td>${date}</td></tr>
               <tr><th>मुख्य प्रकार</th><td>${mainCat}</td></tr>
               <tr><th>तपशील</th><td>${subCat}</td></tr>
-              <tr><th>ठिकाण / रस्ता</th><td>${loc}</td></tr>
+              <tr><th>रस्त्याचे नाव</th><td>${roadName}</td></tr>
+              <tr><th>व्याप्ती</th><td><b>पासून:</b> ${fromLoc} &nbsp;&nbsp;|&nbsp;&nbsp; <b>पर्यंत:</b> ${toLoc}</td></tr>
               <tr><th>शेरा (Remark)</th><td>${remark}</td></tr>
             </table>
           `;
@@ -622,17 +743,34 @@
           const singleClass = chunk.length === 1 ? 'single' : '';
           photosHTML += `
             <div class="photo-card ${singleClass}">
-              <img src="${imgSrc}" alt="तक्रार फोटो">
+              <img src="${imgSrc}" alt="Geo-Tagged Photo">
             </div>
           `;
         });
         photosHTML += '</div>';
 
         pageDiv.innerHTML = headerHTML + detailsHTML + photosHTML;
-        printContent.appendChild(pageDiv);
+        renderArea.appendChild(pageDiv);
       });
 
-      window.print();
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pages = renderArea.querySelectorAll('.pdf-page');
+
+      for (let i = 0; i < pages.length; i++) {
+        const canvas = await html2canvas(pages[i], {
+          scale: 2,
+          useCORS: true,
+          logging: false
+        });
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+      }
+
+      pdf.save(`KDMC_D_Prabhag_Report_${Date.now()}.pdf`);
+      overlay.style.display = 'none';
     }
   </script>
 </body>
