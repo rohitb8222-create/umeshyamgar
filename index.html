@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KDMC ड प्रभाग क्षेत्र १४ - तक्रार अहवाल</title>
+  <style>
+    :root {
+      --primary: #0d47a1;
+      --border: #222;
+      --bg-gray: #f4f6f9;
+      --danger: #d32f2f;
+      --warning: #f57c00;
+      --info: #0288d1;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-gray);
+      padding: 12px;
+      color: #333;
+    }
+
+    /* Mobile Entry Form UI */
+    .form-container {
+      max-width: 650px;
+      margin: 0 auto 30px;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 10px;
+    }
+
+    .form-header h2 {
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .form-header h3 {
+      font-size: 15px;
+      color: #444;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #222;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .file-input-box {
+      border: 2px dashed #90caf9;
+      background: #e3f2fd;
+      padding: 14px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .file-input-box input {
+      display: block;
+      margin-top: 6px;
+    }
+
+    /* Interactive Preview Cards */
+    .preview-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .preview-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .preview-thumb-wrap {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      overflow: hidden;
+      border-radius: 4px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex-grow: 1;
+    }
+
+    .act-btn {
+      border: none;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-rotate { background-color: var(--warning); }
+    .btn-replace { background-color: var(--info); }
+    .btn-delete { background-color: var(--danger); }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    /* Print & PDF Layout */
+    .print-wrapper {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      .form-container {
+        display: none !important;
+      }
+
+      .print-wrapper {
+        display: block !important;
+        width: 100%;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+      }
+
+      .pdf-page {
+        width: 100%;
+        height: 275mm;
+        page-break-after: always;
+        page-break-inside: avoid;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .pdf-page:last-child {
+        page-break-after: avoid;
+      }
+
+      .pdf-header {
+        text-align: center;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 4px;
+        margin-bottom: 8px;
+      }
+
+      .pdf-header h1 {
+        font-size: 17px;
+        font-weight: 800;
+        margin: 0;
+      }
+
+      .pdf-header h2 {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 2px 0 0;
+      }
+
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 8px;
+      }
+
+      .details-table th, 
+      .details-table td {
+        border: 1px solid var(--border);
+        padding: 4px 8px;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .details-table th {
+        width: 25%;
+        background-color: #f0f0f0;
+        text-align: left;
+      }
+
+      .photo-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex-grow: 1;
+      }
+
+      .photo-card {
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 2px;
+        display: block;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .page-first .photo-card {
+        height: 98mm;
+      }
+
+      .page-next .photo-card {
+        height: 124mm;
+      }
+
+      .page-first .photo-card.single {
+        height: 205mm;
+      }
+
+      .page-next .photo-card.single {
+        height: 250mm;
+      }
+
+      .photo-card img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: fill !important;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Input Form -->
+  <div class="form-container">
+    <div class="form-header">
+      <h2>कल्याण डोंबिवली महानगरपालिका</h2>
+      <h3>ड प्रभाग क्षेत्र १४ - तक्रार निवारण अहवाल</h3>
+    </div>
+
+    <div class="form-group">
+      <label>तारीख (Date):</label>
+      <input type="date" id="inDate">
+    </div>
+
+    <div class="form-group">
+      <label>अडचणीचा मुख्य प्रकार:</label>
+      <select id="inMainCat" onchange="loadSubCategories()">
+        <option value="">-- प्रकार निवडा --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>अडचणीचा उप-प्रकार:</label>
+      <select id="inSubCat">
+        <option value="">-- आधी मुख्य प्रकार निवडा --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>ठिकाण / रस्त्याचे नाव:</label>
+      <input type="text" id="inLocation" placeholder="रस्त्याचे नाव / लँडमार्क टाका">
+    </div>
+
+    <div class="form-group">
+      <label>शेरा (Remark):</label>
+      <textarea id="inRemark" placeholder="तक्रारीबाबत शेरा किंवा अतिरिक्त माहिती..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <div class="file-input-box">
+        <label>📸 फोटो निवडा (Multi-Select):</label>
+        <input type="file" id="multiPhotos" accept="image/*" multiple onchange="handlePhotos(event)">
+        <div id="photoStatus" style="color: #0d47a1; font-weight: bold; margin-top: 6px; font-size: 13px;">कोणताही फोटो निवडलेला नाही</div>
+      </div>
+      
+      <!-- Interactive Preview List with Rotate / Change / Delete -->
+      <div class="preview-card-list" id="previewList"></div>
+    </div>
+
+    <!-- Hidden Input for Replacing Individual Photo -->
+    <input type="file" id="replaceInput" accept="image/*" style="display:none;" onchange="executeReplace(event)">
+
+    <button class="btn-submit" onclick="generateReport()">PDF तयार करा / प्रिंट करा</button>
+  </div>
+
+  <!-- Dynamic Printable Area -->
+  <div class="print-wrapper" id="printContent"></div>
+
+  <script>
+    const issueData = {
+      "1. रस्त्याची अवस्था / खड्डे": [
+        "रस्त्यावर मोठा खड्डा", "रस्त्यावर मध्यम खड्डा", "रस्त्यावर लहान खड्डा", "अनेक ठिकाणी खड्डे",
+        "रस्ता पूर्णपणे खराब / उखडलेला", "डांबरी रस्ता खराब", "काँक्रीट रस्ता खराब", "रस्ता खचलेला",
+        "रस्त्यावर भेगा पडलेल्या", "रस्त्यावर खोलगट भाग", "रस्त्यावर अनावश्यक उंचवटा",
+        "पाण्याच्या प्रवाहामुळे रस्ता वाहून गेलेला", "रस्त्याची कड तुटलेली", "रस्त्यावर खडी/मुरूम साचलेला",
+        "रस्त्यावर माती/चिखल साचलेला"
+      ],
+      "2. रस्त्यावरील खोदकाम": [
+        "पाणीपुरवठ्यासाठी खोदकाम", "ड्रेनेजसाठी खोदकाम", "विद्युत कामासाठी खोदकाम", "केबलसाठी खोदकाम",
+        "गॅस लाईनसाठी खोदकाम", "खोदकामानंतर रस्ता पूर्ववत केलेला नाही", "अर्धवट रस्ता दुरुस्ती",
+        "बॅरिकेड नसलेले खोदकाम", "Warning Board नसलेले खोदकाम", "खोदकामातील राडारोडा रस्त्यावर",
+        "खोदकामातील माती रस्त्यावर", "जुने खोदकाम उघडे आहे"
+      ],
+      "3. पाणी / ड्रेनेज": [
+        "रस्त्यावर पाणी साचणे", "पावसाचे पाणी साचणे", "पाणीपुरवठा लाईन गळती", "जलवाहिनी फुटलेली",
+        "सांडपाणी रस्त्यावर येणे", "नाल्याचे पाणी रस्त्यावर येणे", "गटार तुंबलेले", "नाला तुंबलेला",
+        "नाल्यात कचरा साचलेला", "पाण्याचा निचरा होत नाही", "मॅनहोलचे झाकण तुटलेले", "मॅनहोल उघडे आहे",
+        "चेंबर रस्त्यापेक्षा खाली आहे", "चेंबर रस्त्यापेक्षा उंच आहे", "चेंबरमधून पाणी बाहेर येत आहे"
+      ],
+      "4. फुटपाथ": [
+        "फुटपाथ तुटलेला", "फुटपाथवर खड्डा", "फुटपाथ खचलेला", "पेव्हर ब्लॉक खराब", "फुटपाथवर अतिक्रमण",
+        "फुटपाथवर वाहन पार्किंग", "दुकानाचे साहित्य फुटपाथवर", "बांधकाम साहित्य फुटपाथवर", "फुटपाथवर कचरा",
+        "फुटपाथवर पाणी साचणे", "फुटपाथवर उघडे चेंबर", "दिव्यांगांसाठी Ramp नाही", "Ramp खराब आहे",
+        "झाडामुळे फुटपाथला अडथळा", "पोलमुळे फुटपाथला अडथळा"
+      ],
+      "5. झाड / विद्युत पोल परिसर": [
+        "झाडाभोवती माती साचलेली", "झाडाभोवती कचरा", "झाडाभोवती राडारोडा", "झाडाभोवती मुरूम/खडी",
+        "झाडाभोवती अतिक्रमण", "झाडाच्या बुंध्याभोवती काँक्रीट", "झाडामुळे रस्ता अडथळित", "झाडामुळे फुटपाथ अडथळित",
+        "झाडाची फांदी रस्त्यावर आलेली", "धोकादायक/वाळलेले झाड", "झाडाच्या मुळांमुळे रस्ता खराब",
+        "विद्युत पोलभोवती माती", "विद्युत पोलभोवती कचरा", "विद्युत पोलभोवती राडारोडा", "विद्युत पोलभोवती अतिक्रमण",
+        "पोलमुळे पादचारी मार्गास अडथळा", "पोलचा पाया खराब"
+      ],
+      "6. गॅरेज / वाहन दुरुस्ती": [
+        "रस्त्यावर कार रिपेअरिंग", "रस्त्यावर रिक्षा रिपेअरिंग", "रस्त्यावर दुचाकी रिपेअरिंग",
+        "रस्त्यावर मोठ्या वाहनांची दुरुस्ती", "रस्त्यावर वाहन सर्व्हिसिंग", "रस्त्यावर वाहन धुलाई",
+        "रस्त्यावर टायर दुरुस्ती", "रस्त्यावर बॅटरी दुरुस्ती", "वाहनांचे सुटे भाग रस्त्यावर ठेवलेले",
+        "ऑईल/ग्रीस रस्त्यावर सांडलेले", "रस्त्यावर Welding/कटिंग", "गॅरेजची वाहने रस्त्यावर उभी",
+        "गॅरेजमुळे वाहतुकीस अडथळा", "गॅरेजमुळे फुटपाथ अडथळित"
+      ],
+      "7. फर्निचर / AC / कपाट रिपेअरिंग": [
+        "रस्त्यावर फर्निचर रिपेअरिंग", "रस्त्यावर कपाट रिपेअरिंग", "रस्त्यावर सोफा रिपेअरिंग",
+        "रस्त्यावर खुर्ची/टेबल रिपेअरिंग", "रस्त्यावर लाकूड कटिंग", "रस्त्यावर लाकडी फर्निचर तयार करणे",
+        "रस्त्यावर फर्निचर पॉलिशिंग", "रस्त्यावर AC रिपेअरिंग", "रस्त्यावर AC युनिट उघडून दुरुस्ती",
+        "AC चे पार्ट्स रस्त्यावर ठेवलेले", "कपाट/फर्निचरचे पार्ट्स रस्त्यावर", "लाकूड/भुसा रस्त्यावर साचलेला",
+        "रस्त्यावर ड्रिलिंग/कटिंगचे काम", "रिपेअरिंगच्या साहित्यामुळे रस्ता अडथळित",
+        "रिपेअरिंगच्या साहित्यामुळे फुटपाथ अडथळित", "रिपेअरिंगमुळे कचरा/घाण निर्माण"
+      ],
+      "8. अतिक्रमण / दुकानांचे साहित्य": [
+        "दुकानाचा माल रस्त्यावर", "दुकानाचे साहित्य फुटपाथवर", "भाजी विक्रेता रस्त्यावर", "हातगाडी रस्त्यावर",
+        "खाद्यपदार्थाचे स्टॉल रस्त्यावर", "अनधिकृत शेड", "रस्त्यावर अनधिकृत बांधकाम", "जाहिरात फलकामुळे अडथळा",
+        "रस्त्यावर मंडप", "सार्वजनिक जागा अडवलेली", "रस्त्यावर मालाचा साठा", "वाळू/खडी/विटा रस्त्यावर",
+        "बांधकाम साहित्य रस्त्यावर", "व्यवसायामुळे रस्त्यावर कचरा"
+      ],
+      "9. पार्किंग / वाहतूक": [
+        "अनधिकृत पार्किंग", "दुचाकींचे अनधिकृत पार्किंग", "चारचाकींचे अनधिकृत पार्किंग", "रिक्षांचे अनधिकृत पार्किंग",
+        "बस/मोठ्या वाहनांमुळे अडथळा", "नो-पार्किंगमध्ये वाहन", "रस्ता अडवून वाहन उभे", "गॅरेजसमोर रस्त्यावर वाहने",
+        "हातगाडीमुळे वाहतुकीस अडथळा"
+      ],
+      "10. वाहतूक सुरक्षा": [
+        "Traffic Signal खराब", "वाहतूक चिन्ह खराब", "दिशादर्शक फलक नाही", "Zebra Crossing नाही",
+        "Zebra Crossing खराब", "Speed Breaker नाही", "Speed Breaker खराब", "Speed Breaker Marking नाही",
+        "Lane Marking अस्पष्ट", "रोड Safety Barrier खराब", "रस्त्यावरील रेलिंग तुटलेले", "डिव्हायडर खराब",
+        "धोकादायक वळण", "रस्त्यावर दृश्य अडथळा", "शाळेजवळ वाहतूक सुरक्षेची अडचण"
+      ],
+      "11. स्ट्रीट लाईट": [
+        "स्ट्रीट लाईट बंद", "दिवा लुकलुकत आहे", "दिवसा स्ट्रीट लाईट सुरू", "विद्युत पोल खराब",
+        "पोल वाकलेला", "पोल धोकादायक", "वायर लोंबकळत आहेत", "उघडे विद्युत वायरिंग",
+        "प्रकाश अपुरा", "रस्ता अंधारात", "फुटपाथवर प्रकाश नाही"
+      ],
+      "12. स्वच्छता / कचरा": [
+        "रस्त्यावर कचरा", "रस्त्याच्या कडेला कचरा", "कचऱ्याचा मोठा ढीग", "कचरा संकलन न होणे",
+        "C&D Waste / राडारोडा", "बांधकाम मलबा", "प्लास्टिक कचरा", "मृत प्राणी/जनावर",
+        "रस्त्यावर घाण", "रस्त्यावर चिखल", "दुर्गंधी", "कचरा पेटी ओसंडून वाहणे", "कचरा टाकण्याचा अनधिकृत ठिकाण"
+      ],
+      "13. पावसाळी अडचणी": [
+        "पावसात रस्ता जलमय", "मोठ्या प्रमाणात पाणी साचणे", "नाला ओव्हरफ्लो", "गटार ओव्हरफ्लो",
+        "घरात पाणी जाणे", "दुकानात पाणी जाणे", "रस्त्यावर पाण्याचा वेगवान प्रवाह", "चिखल साचणे",
+        "पाण्यामुळे रस्ता खचणे", "पावसामुळे नवीन खड्डा तयार होणे"
+      ],
+      "14. सार्वजनिक सुविधा": [
+        "बस थांबा खराब", "बस थांब्याजवळ रस्ता खराब", "सार्वजनिक शौचालय परिसरातील रस्ता खराब",
+        "सार्वजनिक बाक खराब", "पिण्याच्या पाण्याच्या ठिकाणी अडचण", "शाळेजवळ रस्त्याची अडचण",
+        "रुग्णालयाजवळ रस्त्याची अडचण", "बाजार परिसरातील रस्त्याची अडचण", "धार्मिक स्थळाजवळ रस्त्याची अडचण"
+      ],
+      "15. इतर सार्वजनिक अडचणी": [
+        "रस्त्यावर भटके प्राणी", "रस्त्यावर जनावरे", "रस्त्यावर वाहन धुणे", "रस्त्यावर व्यवसाय/वर्कशॉपचे काम",
+        "रस्त्यावर माल उतरवणे/चढवणे", "अनधिकृत जाहिरात/बॅनर", "अनधिकृत कार्यक्रम/मंडप",
+        "रस्ता अनधिकृतपणे बंद", "अपघाताचा संभाव्य धोका", "इतर रस्त्याशी संबंधित अडचण"
+      ],
+      "16. होर्डिंग / बॅनर / जाहिरात फलक": [
+        "अनधिकृत होर्डिंग", "अनधिकृत बॅनर", "रस्त्यावर अनधिकृत बॅनर", "फुटपाथवर बॅनर",
+        "विद्युत पोलवर बॅनर", "झाडाला बांधलेला बॅनर", "डिव्हायडरवर बॅनर", "रस्त्याच्या कडेला जाहिरात फलक",
+        "वाहतुकीस अडथळा निर्माण करणारा होर्डिंग", "धोकादायक/झुकलेले होर्डिंग", "खराब/फाटलेला बॅनर",
+        "रस्त्याची दृश्यता अडविणारा जाहिरात फलक", "Traffic Signal/Traffic Sign झाकणारा बॅनर",
+        "Street Light झाकणारा बॅनर/फलक", "झाडाला बांधलेले जाहिरात साहित्य", "परवानगीशिवाय जाहिरात फलक",
+        "अनधिकृत फ्लेक्स", "पोस्टर/भित्तीपत्रकामुळे सार्वजनिक मालमत्ता विद्रूप", "भिंतीवर अनधिकृत जाहिरात/पोस्टर",
+        "कार्यक्रमाचे बॅनर/फलक मुदत संपल्यानंतरही लावलेले"
+      ],
+      "17. बेवारस / संशयास्पद / दीर्घकाळ उभी वाहने": [
+        "बेवारस चारचाकी वाहन", "बेवारस दुचाकी", "बेवारस रिक्षा", "बेवारस मोठे वाहन", "बेवारस टेम्पो/व्हॅन",
+        "दीर्घकाळ एकाच ठिकाणी उभे असलेले वाहन", "सार्वजनिक रस्त्यावर दीर्घकाळ पार्क केलेले वाहन",
+        "खराब अवस्थेतील वाहन रस्त्यावर ठेवलेले", "नादुरुस्त वाहन रस्त्यावर सोडलेले",
+        "टायर नसलेले/मोठ्या प्रमाणात खराब वाहन", "भंगार अवस्थेतील वाहन", "वाहतुकीस अडथळा करणारे बेवारस वाहन",
+        "फुटपाथ अडविणारे बेवारस वाहन", "झाड/पोललगत दीर्घकाळ उभे वाहन", "सार्वजनिक जागेत पडून असलेले जुने वाहन",
+        "वाहन मालकाची माहिती उपलब्ध नसलेले वाहन", "संशयास्पदरीत्या दीर्घकाळ उभे असलेले वाहन"
+      ]
+    };
+
+    let uploadedImages = [];
+    let replacingIndex = -1;
+
+    window.onload = function() {
+      const mainSelect = document.getElementById('inMainCat');
+      document.getElementById('inDate').valueAsDate = new Date();
+      
+      for (let category in issueData) {
+        let opt = document.createElement('option');
+        opt.value = category;
+        opt.innerText = category;
+        mainSelect.appendChild(opt);
+      }
+    };
+
+    function loadSubCategories() {
+      const mainCat = document.getElementById('inMainCat').value;
+      const subSelect = document.getElementById('inSubCat');
+      subSelect.innerHTML = '<option value="">-- निवडा --</option>';
+
+      if (mainCat && issueData[mainCat]) {
+        issueData[mainCat].forEach(sub => {
+          let opt = document.createElement('option');
+          opt.value = sub;
+          opt.innerText = sub;
+          subSelect.appendChild(opt);
+        });
+      }
+    }
+
+    function handlePhotos(event) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
+
+      let loadedCount = 0;
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedImages.push(e.target.result);
+          loadedCount++;
+          if (loadedCount === files.length) {
+            renderPreviewList();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+    }
+
+    function renderPreviewList() {
+      const container = document.getElementById('previewList');
+      const status = document.getElementById('photoStatus');
+      container.innerHTML = '';
+
+      if (uploadedImages.length === 0) {
+        status.innerText = "कोणताही फोटो निवडलेला नाही";
+        return;
+      }
+
+      status.innerText = `एकूण ${uploadedImages.length} फोटो निवडले गेले आहेत.`;
+
+      uploadedImages.forEach((imgSrc, index) => {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+        item.innerHTML = `
+          <div class="preview-thumb-wrap">
+            <img src="${imgSrc}" alt="Thumbnail">
+          </div>
+          <div class="preview-actions">
+            <button type="button" class="act-btn btn-rotate" onclick="rotateImage(${index})">🔄 फिरवा (Rotate)</button>
+            <button type="button" class="act-btn btn-replace" onclick="triggerReplace(${index})">✏️ बदला (Change)</button>
+            <button type="button" class="act-btn btn-delete" onclick="deleteImage(${index})">🗑️ हटवा (Delete)</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function deleteImage(index) {
+      uploadedImages.splice(index, 1);
+      renderPreviewList();
+    }
+
+    function triggerReplace(index) {
+      replacingIndex = index;
+      document.getElementById('replaceInput').click();
+    }
+
+    function executeReplace(event) {
+      const file = event.target.files[0];
+      if (file && replacingIndex > -1) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedImages[replacingIndex] = e.target.result;
+          renderPreviewList();
+          replacingIndex = -1;
+        };
+        reader.readAsDataURL(file);
+      }
+      event.target.value = '';
+    }
+
+    function rotateImage(index) {
+      const img = new Image();
+      img.src = uploadedImages[index];
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalHeight;
+        canvas.height = img.naturalWidth;
+        const ctx = canvas.getContext('2d');
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(90 * Math.PI / 180);
+        ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+        
+        uploadedImages[index] = canvas.toDataURL('image/jpeg', 0.92);
+        renderPreviewList();
+      };
+    }
+
+    function generateReport() {
+      const date = document.getElementById('inDate').value || '-';
+      const mainCat = document.getElementById('inMainCat').value || '-';
+      const subCat = document.getElementById('inSubCat').value || '-';
+      const loc = document.getElementById('inLocation').value || '-';
+      const remark = document.getElementById('inRemark').value || '-';
+
+      const printContent = document.getElementById('printContent');
+      printContent.innerHTML = '';
+
+      const chunks = [];
+      if (uploadedImages.length === 0) {
+        chunks.push([]);
+      } else {
+        for (let i = 0; i < uploadedImages.length; i += 2) {
+          chunks.push(uploadedImages.slice(i, i + 2));
+        }
+      }
+
+      chunks.forEach((chunk, pageIndex) => {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = `pdf-page ${pageIndex === 0 ? 'page-first' : 'page-next'}`;
+
+        let headerHTML = `
+          <div class="pdf-header">
+            <h1>कल्याण डोंबिवली महानगरपालिका</h1>
+            <h2>ड प्रभाग क्षेत्र कार्यालय क्र. १४</h2>
+          </div>
+        `;
+
+        let detailsHTML = '';
+        if (pageIndex === 0) {
+          detailsHTML = `
+            <table class="details-table">
+              <tr><th>दिनांक</th><td>${date}</td></tr>
+              <tr><th>मुख्य प्रकार</th><td>${mainCat}</td></tr>
+              <tr><th>तपशील</th><td>${subCat}</td></tr>
+              <tr><th>ठिकाण / रस्ता</th><td>${loc}</td></tr>
+              <tr><th>शेरा (Remark)</th><td>${remark}</td></tr>
+            </table>
+          `;
+        }
+
+        let photosHTML = '<div class="photo-stack">';
+        chunk.forEach(imgSrc => {
+          const singleClass = chunk.length === 1 ? 'single' : '';
+          photosHTML += `
+            <div class="photo-card ${singleClass}">
+              <img src="${imgSrc}" alt="तक्रार फोटो">
+            </div>
+          `;
+        });
+        photosHTML += '</div>';
+
+        pageDiv.innerHTML = headerHTML + detailsHTML + photosHTML;
+        printContent.appendChild(pageDiv);
+      });
+
+      window.print();
+    }
+  </script>
+</body>
+</html>
